@@ -8,6 +8,7 @@ import io.github.kamiiroawase.nexttime.Schedule
 import io.github.kamiiroawase.nexttime.anchor
 import io.github.kamiiroawase.nexttime.nextTarget
 import io.github.kamiiroawase.nexttime.previousTarget
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
@@ -58,8 +59,10 @@ data class EventEntity(
             event: EventEntity,
             now: ZonedDateTime,
             zone: ZoneId,
-        ): Pair<ZonedDateTime?, ZonedDateTime?> {
-            if (event.id == 0L) return event.nextBoundedTarget(now, zone) to null
+        ): Triple<ZonedDateTime?, ZonedDateTime?, ZonedDateTime?> {
+            if (event.id == 0L) {
+                return Triple(event.nextBoundedTarget(now, zone), null, event.previousTarget(now, zone))
+            }
 
             val cached = targetCache[event.id]
 
@@ -68,16 +71,18 @@ data class EventEntity(
                 cached.zone == zone &&
                 (cached.upcoming == null || cached.upcoming.isAfter(now))
             ) {
-                return cached.upcoming to cached.ended
+                return Triple(cached.upcoming, cached.ended, cached.previous)
             }
 
             val upcoming = event.nextBoundedTarget(now, zone)
 
             val ended = if (upcoming == null) event.lastBoundedTarget(zone) else null
 
-            targetCache[event.id] = TargetCache(event, zone, upcoming, ended)
+            val previous = if (upcoming == null) null else event.previousTarget(now, zone)
 
-            return upcoming to ended
+            targetCache[event.id] = TargetCache(event, zone, upcoming, ended, previous)
+
+            return Triple(upcoming, ended, previous)
         }
 
         internal fun evictTarget(eventId: Long) {
@@ -134,12 +139,35 @@ data class EventEntity(
         )?.toZdt(zone)
     }
 
+    private fun previousTarget(
+        now: ZonedDateTime,
+        zone: ZoneId,
+    ): ZonedDateTime? = toSchedule().previousTarget(now.toKxInstant(), zone.toKxZone())?.toZdt(zone)
+
     private class TargetCache(
         val source: EventEntity,
         val zone: ZoneId,
         val upcoming: ZonedDateTime?,
         val ended: ZonedDateTime?,
+        val previous: ZonedDateTime?,
     )
+}
+
+/**
+ * 「还有0天」窗口：最近一次出现落在今天（本地日）、且下一次出现距现在不少于
+ * 24 小时（本就会显示 ≥1 天的倒计时）时返回该次出现，当天按 0 天展示而非立即
+ * 滚动到下一次。日/小时/分钟级重复的下一次出现恒在 24 小时内，天然不进窗口；
+ * 非重复与已结束日程的下一次出现为过去时刻或 null，被 24 小时守卫排除。
+ */
+internal fun todayOccurrence(
+    previous: ZonedDateTime?,
+    upcoming: ZonedDateTime?,
+    now: ZonedDateTime,
+): ZonedDateTime? {
+    if (previous == null || upcoming == null) return null
+    if (previous.toLocalDate() != now.toLocalDate()) return null
+    if (Duration.between(now.toInstant(), upcoming.toInstant()) < Duration.ofDays(1)) return null
+    return previous
 }
 
 internal fun ZonedDateTime.toKxInstant(): KxInstant = KxInstant.fromEpochMilliseconds(toInstant().toEpochMilli())

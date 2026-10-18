@@ -9,6 +9,8 @@ import android.content.Intent
 import io.github.kaimiroawase.countdown.AppContainer
 import io.github.kaimiroawase.countdown.BuildConfig
 import io.github.kaimiroawase.countdown.model.EventEntity
+import io.github.kaimiroawase.countdown.model.calendarDayCount
+import io.github.kaimiroawase.countdown.model.todayOccurrence
 import io.github.kaimiroawase.countdown.ui.activity.MainActivity
 import java.time.Duration
 import java.time.ZoneId
@@ -27,11 +29,26 @@ internal object WidgetScheduler {
         val next =
             events
                 .mapNotNull { event ->
-                    val (upcoming, ended) = EventEntity.resolveTarget(event, now, zone)
+                    val (upcoming, ended, previous) = EventEntity.resolveTarget(event, now, zone)
 
-                    val target = upcoming ?: ended ?: return@mapNotNull null
+                    val calendarDisplay =
+                        todayOccurrence(previous, upcoming, now) != null ||
+                            (upcoming != null && event.calendarDayCount(upcoming, now) != null)
 
-                    nextDayBoundaryMillis(now, target)
+                    if (calendarDisplay) {
+                        // 日历口径的展示值都在次日零点翻转（0天窗口结束 / N 天减一），需精确刷新
+                        now
+                            .toLocalDate()
+                            .plusDays(1)
+                            .atStartOfDay(now.zone)
+                            .plusSeconds(1)
+                            .toInstant()
+                            .toEpochMilli()
+                    } else {
+                        val target = upcoming ?: ended ?: return@mapNotNull null
+
+                        nextDayBoundaryMillis(now, target)
+                    }
                 }.minOrNull() ?: return null
 
         return minOf(next, now.toInstant().toEpochMilli() + SELF_CHECK_MILLIS)

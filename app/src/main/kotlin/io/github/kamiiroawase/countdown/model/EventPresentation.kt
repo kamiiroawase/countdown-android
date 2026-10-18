@@ -5,6 +5,7 @@ import com.tyme.solar.SolarDay
 import io.github.kaimiroawase.countdown.AppContainer
 import io.github.kaimiroawase.countdown.R
 import io.github.kamiiroawase.nexttime.CountdownUnit
+import io.github.kamiiroawase.nexttime.RepeatUnit
 import io.github.kamiiroawase.nexttime.Rounding
 import io.github.kamiiroawase.nexttime.countdown
 import java.time.Duration
@@ -17,12 +18,42 @@ fun EventEntity.infoItem(
     zone: ZoneId = AppContainer.zoneId,
     now: ZonedDateTime = ZonedDateTime.now(zone),
 ): EventItem {
-    val (upcoming, ended) = EventEntity.resolveTarget(this, now, zone)
+    val (upcoming, ended, previous) = EventEntity.resolveTarget(this, now, zone)
 
     val target =
         upcoming
             ?: ended?.let { end -> return endedItem(context, end, now) }
             ?: return EventItem(this, "", "", "", "", "", "", false)
+
+    todayOccurrence(previous, upcoming, now)?.let { today ->
+        return EventItem(
+            event = this,
+            date = dateText(context, today),
+            time = timeText(today),
+            week = today.format(AppContainer.weekFormatter),
+            prefix = context.getString(R.string.countdown_prefix_future),
+            value = "0",
+            unit = context.getString(R.string.countdown_unit_day),
+            daysValue = 0L,
+            targetEpochDay = today.toLocalDate().toEpochDay(),
+            past = false,
+        )
+    }
+
+    calendarDayCount(target, now)?.let { days ->
+        return EventItem(
+            event = this,
+            date = dateText(context, target),
+            time = timeText(target),
+            week = target.format(AppContainer.weekFormatter),
+            prefix = context.getString(R.string.countdown_prefix_future),
+            value = days.toString(),
+            unit = context.getString(R.string.countdown_unit_day),
+            daysValue = days,
+            targetEpochDay = target.toLocalDate().toEpochDay(),
+            past = false,
+        )
+    }
 
     val countdown =
         countdown(
@@ -53,9 +84,25 @@ fun EventEntity.daysCountdownTexts(
     zone: ZoneId = AppContainer.zoneId,
     now: ZonedDateTime = ZonedDateTime.now(zone),
 ): Triple<String, String, String>? {
-    val (upcoming, ended) = EventEntity.resolveTarget(this, now, zone)
+    val (upcoming, ended, previous) = EventEntity.resolveTarget(this, now, zone)
 
     val target = upcoming ?: ended ?: return null
+
+    todayOccurrence(previous, upcoming, now)?.let {
+        return Triple(
+            context.getString(R.string.countdown_prefix_future),
+            "0",
+            context.getString(R.string.countdown_unit_day),
+        )
+    }
+
+    calendarDayCount(target, now)?.let { days ->
+        return Triple(
+            context.getString(R.string.countdown_prefix_future),
+            days.toString(),
+            context.getString(R.string.countdown_unit_day),
+        )
+    }
 
     val duration = Duration.between(now.toInstant(), target.toInstant())
 
@@ -91,22 +138,51 @@ fun List<EventEntity>.sortedForDisplay(
         this
             .filter { it.order == 0 }
             .map {
-                val (upcoming, ended) = EventEntity.resolveTarget(it, now, zone)
+                val (upcoming, ended, previous) = EventEntity.resolveTarget(it, now, zone)
 
-                it to (upcoming ?: ended)
+                val today = todayOccurrence(previous, upcoming, now)
+
+                AutoSortEntry(
+                    event = it,
+                    key = today ?: upcoming ?: ended,
+                    pending = today != null || (upcoming != null && !upcoming.isBefore(now)),
+                )
             }
 
-    val upcoming =
+    val upcomingEntries =
         auto
-            .filter { it.second != null && !it.second!!.isBefore(now) }
-            .sortedBy { it.second }
+            .filter { it.key != null && it.pending }
+            .sortedBy { it.key }
 
     val elapsed =
         auto
-            .filter { it.second == null || it.second!!.isBefore(now) }
-            .sortedByDescending { it.second }
+            .filter { it.key == null || !it.pending }
+            .sortedByDescending { it.key }
 
-    return manual + upcoming.map { it.first } + elapsed.map { it.first }
+    return manual + upcomingEntries.map { it.event } + elapsed.map { it.event }
+}
+
+private data class AutoSortEntry(
+    val event: EventEntity,
+    val key: ZonedDateTime?,
+    val pending: Boolean,
+)
+
+/**
+ * 日历天计数（ceilFuture 开启「不足一天算一天」时的展示口径）：目标日距今天
+ * ≥1 个日历天时返回日期差 N，整天显示「还有N天」，不再随剩余时长逐小时滚动。
+ * 关闭 ceilFuture 或小时/分钟重复（出现间隔不足一天）返回 null，走精确时长口径。
+ */
+internal fun EventEntity.calendarDayCount(
+    target: ZonedDateTime,
+    now: ZonedDateTime,
+): Long? {
+    if (!ceilFuture) return null
+    if (repeatUnit == RepeatUnit.HOUR || repeatUnit == RepeatUnit.MINUTE) return null
+
+    val dayDiff = target.toLocalDate().toEpochDay() - now.toLocalDate().toEpochDay()
+
+    return if (dayDiff >= 1L) dayDiff else null
 }
 
 fun lunarDateText(

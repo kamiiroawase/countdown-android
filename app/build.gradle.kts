@@ -37,8 +37,8 @@ android {
         applicationId = "io.github.kaimiroawase.countdown"
         minSdk = 31
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 11
+        versionName = "1.1.0"
     }
 
     packaging {

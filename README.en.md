@@ -10,8 +10,9 @@ An Android countdown app for the days worth looking forward to: solar and lunar 
 ## Features
 
 - **Solar / lunar calendars**: each target day picks its calendar; lunar counting can include leap months
-- **Repeat rules**: every N days / weeks / months / years / hours with an optional end date; "a partial day counts as a day" is a toggle
+- **Repeat rules**: every N days / weeks / months / years / hours with an optional end date
 - **Second-precise**: target times record hour / minute / second; the countdown shows years, months, days, hours, minutes and seconds, switching to "since…" once past
+- **Day counting**: the target day itself shows "0 days left" all day; with "a partial day counts as a day" on, day counts follow calendar days ("N days left" holds for the whole day), off, the remaining time shows instead
 - **Sub-events**: main events carry sub-events; deleting a main event deletes its children; the detail page offers fullscreen display (with or without sub-events)
 - **Views and ordering**: list and grid views; events carry an ordering weight (larger sorts first)
 - **Home-screen widgets**: single-event card and event-list styles, binding one event or following the app's list (all events)
