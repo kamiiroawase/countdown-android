@@ -1,0 +1,124 @@
+<resources>
+    <string name="app_name">红叶倒计时</string>
+    <string name="tab_home">倒计时</string>
+    <string name="tab_mine">我的</string>
+
+    <string name="action_cancel">取消</string>
+    <string name="action_confirm">确定</string>
+    <string name="action_save">保存</string>
+    <string name="action_delete">删除</string>
+    <string name="action_clear">清除</string>
+    <string name="action_got_it">我知道了</string>
+    <string name="hint_pick">请选择</string>
+    <string name="toast_unknown_error">未知错误</string>
+
+    <string name="edit_title_edit">编辑事件</string>
+    <string name="edit_title_create">新增事件</string>
+    <string name="edit_section_basic">基本信息</string>
+    <string name="edit_section_time">时间与提醒</string>
+    <string name="edit_label_name">事件名称</string>
+    <string name="edit_label_order">排序</string>
+    <string name="edit_label_target_time">目标时间</string>
+    <string name="edit_label_notify">提醒</string>
+    <string name="edit_label_target_day">目标日</string>
+    <string name="edit_label_calendar">历法</string>
+    <string name="edit_label_leap">闰月参与</string>
+    <string name="edit_label_repeat">重复</string>
+    <string name="edit_label_repeat_end">重复结束</string>
+    <string name="edit_section_advanced">进阶选项</string>
+    <string name="edit_repeat_end_none">永不结束</string>
+    <string name="picker_title_repeat_end">选择重复结束日</string>
+    <string name="edit_label_ceil">不足一天算一天</string>
+    <string name="edit_hint_name">请输入名称</string>
+    <string name="edit_hint_order">选填，越大越靠前</string>
+
+    <string name="detail_action_edit">编辑事件</string>
+    <string name="detail_action_add_sub_event">添加子事件</string>
+    <string name="detail_sub_events_title">子事件</string>
+    <string name="detail_action_fullscreen">全屏</string>
+    <string name="detail_action_fullscreen_hide_sub">全屏（隐藏子事件）</string>
+    <string name="detail_action_background">更换背景</string>
+    <string name="detail_action_background_reset">恢复默认背景</string>
+
+    <string name="edit_delete_title">删除事件</string>
+    <string name="edit_delete_message">删除后不可恢复，确定删除该事件吗？</string>
+    <string name="edit_delete_message_with_sub">删除后不可恢复，将同时删除 %1$d 个子事件，确定删除该事件吗？</string>
+
+    <string name="edit_leave_title">放弃编辑</string>
+    <string name="edit_leave_message">内容尚未保存，确定要离开吗？</string>
+    <string name="action_leave">离开</string>
+    <string name="calendar_solar">公历</string>
+    <string name="calendar_lunar">农历</string>
+    <string name="toast_name_required">请输入事件名称</string>
+    <string name="toast_order_range">排序需为 1–9999 的数值</string>
+    <string name="toast_target_day_required">请选择目标日</string>
+    <string name="toast_target_time_required">请选择目标时间</string>
+    <string name="toast_event_not_found">事件不存在</string>
+    <string name="toast_event_loading">事件加载中，请稍候</string>
+
+    <string name="picker_title_time">选择时间</string>
+    <string name="picker_title_target_day">选择目标日</string>
+    <string name="picker_title_repeat">重复</string>
+    <string name="picker_hour_wheel">%1$02d时</string>
+    <string name="picker_minute_wheel">%1$02d分</string>
+    <string name="picker_second_wheel">%1$02d秒</string>
+    <string name="repeat_none">不重复</string>
+    <string name="repeat_interval_format">每%1$d</string>
+    <string name="repeat_unit_day">天重复</string>
+    <string name="repeat_unit_week">周重复</string>
+    <string name="repeat_unit_month">月重复</string>
+    <string name="repeat_unit_year">年重复</string>
+    <string name="repeat_unit_hour">小时重复</string>
+
+    <string name="mine_title">我的</string>
+    <string name="mine_section_general">通用</string>
+    <string name="mine_label_zone">时区</string>
+    <string name="mine_title_zone_picker">选择时区</string>
+    <string name="mine_label_notify_notice">提醒说明</string>
+    <string name="mine_label_widget_notice">小组件说明</string>
+    <string name="mine_label_backup_notice">数据备份说明</string>
+
+    <string name="event_preset_meet_you">遇见你</string>
+    <string name="event_preset_chongyang">重阳节</string>
+    <string name="event_preset_spring_festival">春节</string>
+
+    <string name="event_list_empty">暂无事件，请先创建事件</string>
+    <string name="event_info_format">%1$s · %2$s</string>
+    <string name="event_lunar_date">%1$s年%2$s月%3$s</string>
+    <string name="event_meta_sub_event">子事件</string>
+    <string name="event_meta_main_event">主事件</string>
+    <string name="event_meta_order">排序%1$d</string>
+    <string name="event_meta_order_default">排序默认</string>
+    <string name="event_meta_notify_on">提醒打开</string>
+    <string name="event_meta_notify_off">提醒关闭</string>
+    <string name="event_meta_separator"> · </string>
+
+    <string name="countdown_prefix_future">还有</string>
+    <string name="countdown_prefix_past">已经</string>
+    <string name="countdown_unit_year">年</string>
+    <string name="countdown_unit_month">月</string>
+    <string name="countdown_unit_day">天</string>
+    <string name="countdown_unit_hour">小时</string>
+    <string name="countdown_unit_minute">分</string>
+    <string name="countdown_unit_second">秒</string>
+
+    <string name="widget_title">选择事件</string>
+    <string name="widget_unselected">未选择事件</string>
+    <string name="widget_no_events">暂无事件，请先创建事件</string>
+    <string name="widget_select_all">跟随 App 列表（全部）</string>
+
+    <string name="notify_channel_name">事件提醒</string>
+    <string name="notify_channel_desc">事件到达目标时间时提醒</string>
+    <string name="notify_arrived">已到达目标时间</string>
+    <string name="toast_notify_permission_denied">未授予通知权限，无法提醒</string>
+    <string name="toast_exact_alarm_required">需要精确闹钟权限才能准时提醒，请在设置中允许</string>
+
+    <string name="notice_notify_title">提醒说明</string>
+    <string name="notice_notify_message">因国产系统的后台限制，应用退到后台后无法短时间内发送多次通知，且通知可能不会准时到达，甚至可能被系统吞掉。</string>
+    <string name="notice_notify_mitigation_title">缓解方法：</string>
+    <string name="notice_notify_mitigation_items">· 授予本应用自启动权限\n· 将本应用的省电策略设为无限制</string>
+    <string name="notice_widget_title">小组件说明</string>
+    <string name="notice_widget_message">本应用支持桌面小组件（单卡片与事件列表两种样式）。\n\n部分国产系统的原生安卓小组件入口较深，可在桌面空白处长按查找。\n\n未来可能适配国产系统定制版桌面小组件。</string>
+    <string name="notice_backup_title">数据备份说明</string>
+    <string name="notice_backup_message">本应用已适配手机系统备份，事件数据与个人偏好会随系统备份自动保存，恢复备份或换机迁移时无需手动操作。\n\n各品牌手机的备份入口与操作方式不同，若不知道你的手机系统如何备份本应用，可问询豆包等 AI 工具。</string>
+</resources>

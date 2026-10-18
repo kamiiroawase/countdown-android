@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="projectPrimaryColor">#F05E1C</color>
+    <color name="projectOnPrimary">#FFFFFF</color>
+    <color name="projectBackground">#F5F6F8</color>
+    <color name="projectSurface">#FFFFFF</color>
+    <color name="projectDanger">#E53935</color>
+    <color name="projectTargetDayPast">#1C8FF0</color>
+
+    <color name="projectCardFooter">#F2F2F2</color>
+    <color name="projectTextOnFooter">#80000000</color>
+
+    <color name="projectTextStrong">#000000</color>
+    <color name="projectTextPrimary">#333333</color>
+    <color name="projectTextSecondary">#9A9A9A</color>
+    <color name="projectTextTertiary">#666666</color>
+    <color name="projectTextPlaceholder">#AAAAAA</color>
+    <color name="projectTextHint">#B3B3B3</color>
+
+    <color name="projectDivider">#F0F0F0</color>
+    <color name="projectIconChevron">#C3C3C3</color>
+
+    <color name="projectSelectionBand">#FDEEE3</color>
+</resources>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/eventBand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/widget_band_active"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingVertical="2dp"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/eventNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/projectOnPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:textSize="0sp" />
+
+            <TextView
+                android:id="@+id/eventPrefixText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:ellipsize="none"
+                android:maxLines="1"
+                android:textColor="@color/projectOnPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/countdownContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/projectSurface"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/countdownValueText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/projectTextStrong"
+            android:textSize="36sp" />
+
+        <TextView
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:textSize="0sp" />
+
+        <TextView
+            android:id="@+id/countdownUnitText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|bottom"
+            android:paddingBottom="8dp"
+            android:textColor="@color/projectTextStrong"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/targetDateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/projectCardFooter"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/projectTextOnFooter"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:textSize="0sp" />
+
+        <TextView
+            android:id="@+id/weekText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/projectTextOnFooter"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/timeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/widget_footer"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:textColor="@color/projectTextOnFooter"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/widgetEmptyView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/projectSurface"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="24dp"
+        android:text="@string/widget_unselected"
+        android:textColor="@color/projectTextOnFooter"
+        android:textSize="14sp"
+        android:visibility="gone" />
+</LinearLayout>

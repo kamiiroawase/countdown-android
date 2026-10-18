@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="io.github.kaimiroawase.countdown.ui.activity.WidgetConfigActivity"
+    android:initialLayout="@layout/widget_event_card"
+    android:minWidth="110dp"
+    android:minHeight="110dp"
+    android:previewImage="@drawable/widget_event_cover"
+    android:resizeMode="horizontal|vertical"
+    android:updatePeriodMillis="1800000"
+    android:widgetCategory="home_screen" />
