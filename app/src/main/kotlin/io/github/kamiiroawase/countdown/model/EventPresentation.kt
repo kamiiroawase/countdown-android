@@ -1,9 +1,9 @@
 package io.github.kaimiroawase.countdown.model
 
 import android.content.Context
+import com.tyme.solar.SolarDay
 import io.github.kaimiroawase.countdown.AppContainer
 import io.github.kaimiroawase.countdown.R
-import com.tyme.solar.SolarDay
 import io.github.kamiiroawase.nexttime.CountdownUnit
 import io.github.kamiiroawase.nexttime.Rounding
 import io.github.kamiiroawase.nexttime.countdown

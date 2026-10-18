@@ -88,6 +88,10 @@ fun EventEditScreen(
 ) {
     val context = LocalContext.current
 
+    val toastEventNotFound = stringResource(R.string.toast_event_not_found)
+
+    val toastNotifyPermissionDenied = stringResource(R.string.toast_notify_permission_denied)
+
     val scope = rememberCoroutineScope()
 
     val isEdit = eventId > 0
@@ -156,7 +160,7 @@ fun EventEditScreen(
 
     LaunchedEffect(editLoadFinished, editEvent) {
         if (editLoadFinished && editEvent == null) {
-            showToast(context, context.getString(R.string.toast_event_not_found))
+            showToast(context, toastEventNotFound)
             onClose()
         }
     }
@@ -203,7 +207,7 @@ fun EventEditScreen(
             if (!granted) {
                 notify = false
 
-                showToast(context, context.getString(R.string.toast_notify_permission_denied))
+                showToast(context, toastNotifyPermissionDenied)
             }
 
             if (finishAfterPermissionResult) {
@@ -240,23 +244,24 @@ fun EventEditScreen(
         showLeaveConfirm = true
     }
 
+    val repeatNoneLabel = stringResource(R.string.repeat_none)
+
+    val repeatIntervalFormat = stringResource(R.string.repeat_interval_format)
+
     val intervalLabels =
-        remember {
-            listOf(context.getString(R.string.repeat_none)) +
-                (1..99).map { context.getString(R.string.repeat_interval_format, it) }
+        remember(repeatNoneLabel, repeatIntervalFormat) {
+            listOf(repeatNoneLabel) + (1..99).map { repeatIntervalFormat.format(it) }
         }
 
     val unitLabels =
-        remember {
-            listOf(
-                context.getString(R.string.repeat_none),
-                context.getString(R.string.repeat_unit_day),
-                context.getString(R.string.repeat_unit_week),
-                context.getString(R.string.repeat_unit_month),
-                context.getString(R.string.repeat_unit_year),
-                context.getString(R.string.repeat_unit_hour),
-            )
-        }
+        listOf(
+            stringResource(R.string.repeat_none),
+            stringResource(R.string.repeat_unit_day),
+            stringResource(R.string.repeat_unit_week),
+            stringResource(R.string.repeat_unit_month),
+            stringResource(R.string.repeat_unit_year),
+            stringResource(R.string.repeat_unit_hour),
+        )
 
     Column(modifier = Modifier.fillMaxSize().background(PageBackground)) {
         OrangeHeader(
