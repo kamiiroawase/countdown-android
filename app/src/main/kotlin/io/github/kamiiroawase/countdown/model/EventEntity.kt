@@ -154,10 +154,12 @@ data class EventEntity(
 }
 
 /**
- * 「还有0天」窗口：最近一次出现落在今天（本地日）、且下一次出现距现在不少于
- * 24 小时（本就会显示 ≥1 天的倒计时）时返回该次出现，当天按 0 天展示而非立即
- * 滚动到下一次。日/小时/分钟级重复的下一次出现恒在 24 小时内，天然不进窗口；
- * 非重复与已结束日程的下一次出现为过去时刻或 null，被 24 小时守卫排除。
+ * 「还有0天」窗口：下一次出现落在今天（本地日）且尚未到来、出现间隔超过
+ * 24 小时（天及以上尺度的重复）时返回该次出现，当天时刻到来前按 0 天展示，
+ * 时刻一过窗口即失效、倒计时滚动到下一次出现。间隔守卫按相邻两次出现
+ * （previous → upcoming）计：间隔 1 天 / 小时 / 分钟级重复与间隔为 0 的
+ * 非重复日程（previous 与 upcoming 同为锚点，或 previous 为 null 的首现未到）
+ * 天然不进窗口，走精确时长口径；已结束日程 upcoming 为 null，同样排除。
  */
 internal fun todayOccurrence(
     previous: ZonedDateTime?,
@@ -165,9 +167,9 @@ internal fun todayOccurrence(
     now: ZonedDateTime,
 ): ZonedDateTime? {
     if (previous == null || upcoming == null) return null
-    if (previous.toLocalDate() != now.toLocalDate()) return null
-    if (Duration.between(now.toInstant(), upcoming.toInstant()) < Duration.ofDays(1)) return null
-    return previous
+    if (upcoming.toLocalDate() != now.toLocalDate()) return null
+    if (Duration.between(previous.toInstant(), upcoming.toInstant()) <= Duration.ofDays(1)) return null
+    return upcoming
 }
 
 internal fun ZonedDateTime.toKxInstant(): KxInstant = KxInstant.fromEpochMilliseconds(toInstant().toEpochMilli())

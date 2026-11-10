@@ -31,23 +31,31 @@ internal object WidgetScheduler {
                 .mapNotNull { event ->
                     val (upcoming, ended, previous) = EventEntity.resolveTarget(event, now, zone)
 
-                    val calendarDisplay =
-                        todayOccurrence(previous, upcoming, now) != null ||
-                            (upcoming != null && event.calendarDayCount(upcoming, now) != null)
+                    when {
+                        // 0 天窗口内：出现时刻一过滚动到下一次（N 天），在出现时刻精确刷新
+                        upcoming != null && todayOccurrence(previous, upcoming, now) != null -> {
+                            upcoming
+                                .plusSeconds(1)
+                                .toInstant()
+                                .toEpochMilli()
+                        }
 
-                    if (calendarDisplay) {
-                        // 日历口径的展示值都在次日零点翻转（0天窗口结束 / N 天减一），需精确刷新
-                        now
-                            .toLocalDate()
-                            .plusDays(1)
-                            .atStartOfDay(now.zone)
-                            .plusSeconds(1)
-                            .toInstant()
-                            .toEpochMilli()
-                    } else {
-                        val target = upcoming ?: ended ?: return@mapNotNull null
+                        // 日历天口径：N 天在次日零点减一，需精确刷新
+                        upcoming != null && event.calendarDayCount(upcoming, now) != null -> {
+                            now
+                                .toLocalDate()
+                                .plusDays(1)
+                                .atStartOfDay(now.zone)
+                                .plusSeconds(1)
+                                .toInstant()
+                                .toEpochMilli()
+                        }
 
-                        nextDayBoundaryMillis(now, target)
+                        else -> {
+                            val target = upcoming ?: ended ?: return@mapNotNull null
+
+                            nextDayBoundaryMillis(now, target)
+                        }
                     }
                 }.minOrNull() ?: return null
 
