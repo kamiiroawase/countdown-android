@@ -1,16 +1,16 @@
 [versions]
 activityCompose = "1.13.0"
-agp = "9.4.1"
+agp = "9.5.1"
 composeBom = "2026.09.00"
 coreKtx = "1.19.1"
 exifinterface = "1.4.2"
 kotlin = "2.4.21"
-ksp = "2.3.12"
+ksp = "2.3.13"
 lifecycleRuntimeKtx = "2.11.0"
 navigationCompose = "2.10.2"
 nexttime = "4.2.0"
 room = "2.8.5"
-spotless = "8.10.4"
+spotless = "8.11.0"
 zonepicker = "3.4.0"
 
 [libraries]
